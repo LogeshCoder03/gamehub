@@ -1,0 +1,5 @@
+{
+    "status_code":"number",
+    "errors":[],
+    "message":"string"
+}

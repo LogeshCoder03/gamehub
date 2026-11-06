@@ -1,0 +1,8 @@
+fastapi[all]
+slowapi
+uvicorn
+sqlalchemy
+pymysql
+cryptography
+python-jose[cryptography]
+passlib

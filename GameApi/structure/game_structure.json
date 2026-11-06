@@ -1,0 +1,23 @@
+{
+    "id":"number",
+    "name":"string",
+    "logo":"string",
+    "description":"string",
+    "developmentDetails":{
+        "founder":"string",
+        "publishedAt":"date",
+        "madeIn":"string"
+    },
+    "gameDetails":{
+        "type":"Indoor|Outdoor|Online",
+        "downloads":"number",
+        "isConductTournament":"bool",
+        "availableOn":["PC","Mobile","PlayStation"],
+        "popularity":"Extreme|High|Medium|Low",
+        "ratings": "number"
+    },
+    "doc":{
+        "isApproved":"bool",
+        "approvedDate":"date"
+    }
+}

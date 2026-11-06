@@ -1,0 +1,7 @@
+{
+    "title":"Game",
+    "description":"In This Api you get all the details about all popular games available in the era..",
+    "developer":"WebHub",
+    "availableGames":0,
+    "types":["Indoor","Outdoor","Online"]
+}
