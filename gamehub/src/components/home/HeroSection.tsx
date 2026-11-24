@@ -1,48 +1,95 @@
+import { Sparkles } from "lucide-react";
 import { Button } from "../ui/button";
+import { animate, motion } from "motion/react";
+import hero from "@/assests/hero.jpg";
+import { useRef } from "react";
 
-interface Props{
-    onNavigate:(pathName:string)=>void
+interface Props {
+  onNavigate: (pathName: string) => void;
 }
 
-const HeroSection:React.FC<Props> = ({onNavigate}) => {
-  return (
-    <div className="w-full flex items-center justify-center flex-col gap-y-4">
-      <div className="mt-10 flex font-semibold flex-col text-5xl md:text-8xl tracking-tight font-stretch-ultra-expanded items-center">
-        <span className="">
-          <h1>The Global</h1>
-        </span>
-        <div className="flex gap-4 md:gap-10">
-          <h1>Game Data</h1>
-          <div className="bg-linear-to-r from-pink-500 via-red-400 to-rose-600 text-transparent bg-clip-text">
-            <h1>API</h1>
-          </div>
+const HeroSection: React.FC<Props> = ({ onNavigate }) => {    
+    const ref=useRef<HTMLDivElement>(null)
+    const heroRef=useRef<HTMLDivElement>(null)
+    const handleMouseEnter=(e:MouseEvent)=>{
+        const el=ref.current
+        const heroEl=heroRef.current
+        if (!el||!heroEl) return;
+        const rect=el.getBoundingClientRect()
+        const heroRect=heroEl.getBoundingClientRect()
+                
+        animate(ref.current,{
+            x:heroRect.width-rect.width+20,
+        },{
+            duration:1
+        })
+    }    
+    return (
+        <div className=" flex">
+        <div className="space-y-2 pt-18">
+            <div className="inline-flex relative bg-accent rounded-2xl shadow-xs px-4 py-2 gap-2 items-center">
+            <Sparkles size={16} />
+            <span className="font-medium text-xs">
+                Explore the world of gaming
+            </span>
+            </div>
+            <div className="text-6xl font-medium tracking-tight leading-16 pb-3">
+            <h1>Discover Games</h1>
+            <h1>
+                Explore Without{" "}
+                <span className="text-muted-foreground">Limits</span>
+            </h1>
+            </div>
+            <p className="max-w-xl font-normal text-muted-foreground text-sm leading-relaxed tracking-wide pb-4">
+            Access structured data for thousands of online, indoor and outdoor
+            games through a single fast and reliable,API built for developers
+            worldwide.
+            </p>
+            <div className="space-x-4">
+            <Button size="lg" onClick={() => onNavigate("/games")}>Explore Games</Button>
+            <Button size="lg" variant="outline" onClick={() => onNavigate("/docs/overview")}>
+                Docs
+            </Button>
+            </div>
         </div>
-      </div>
-      <p className="text-gray-600 font-normal leading-relaxed tracking-wide my-2 mx-4 md:mx-0">
-        Access structured data for thousands of online, indoor and outdoor games
-        through <br />a single fast and reliable,API built for developers
-        worldwide.
-      </p>
-      <div className="flex gap-x-4 mb-10">
-        <Button
-          size="lg"
-          className="cursor-pointer"
-          onClick={() => onNavigate("/docs/overview")}
-        >
-          Get Started
-        </Button>
-        <Button
-          size="lg"
-          variant="outline"
-          className="cursor-pointer"
-          onClick={() => onNavigate("/games")}
-        >
-          Explore Games
-        </Button>
-      </div>
-    </div>
-  );
+        <div className="relative w-full max-w-xl mx-auto h-110" ref={heroRef}>
+            <div className="absolute inset-8 overflow-hidden rounded-2xl">
+            <img src={hero} className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/70 via-transparent to-transparent"/>
+            </div>
+            <div 
+            ref={ref}
+            onMouseEnter={handleMouseEnter}
+            className="absolute bottom-2 left-0 w-48 p-3 rounded-xl bg-background/90 backdrop-blur-lg border shadow-xl hover:scale-105">
+            <img
+                src={hero}
+                alt="Popular game"
+                className="w-full h-24 object-cover rounded-lg "
+            />
+            <p className="mt-2 font-semibold text-sm">Popular Games</p>
+            <p className="text-xs text-muted-foreground">
+                Explore trending titles
+            </p>
+            </div>
+            <motion.div
+            animate={{
+            rotate:[10,5,0,-5,-10]
+            }}
+            transition={{
+            repeat:Infinity,
+            duration:1,
+            ease:"linear",
+            repeatType:"reverse"
+            }}
+            className="absolute top-4 right-0 rounded-xl   border bg-background/90 backdrop-blur-lg
+                    shadow-lg px-4 py-3"
+            >
+            <p className="text-xs text-muted-foreground">Discover worldwide</p>
+            <p className="font-bold text-lg">10K+ Games</p>
+            </motion.div>
+        </div>
+        </div>
+    );
 };
-
 
 export default HeroSection;

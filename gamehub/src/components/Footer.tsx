@@ -31,7 +31,7 @@ export default function Footer() {
         },
     ]
     return (
-        <footer className="w-full py-14 absolute bg-gray-50">
+        <footer className="w-full pt-14 absolute">
         <div className="max-w-7xl mx-auto px-6">
             {/* Top Section */}
             <div className="grid md:grid-cols-4 gap-10">

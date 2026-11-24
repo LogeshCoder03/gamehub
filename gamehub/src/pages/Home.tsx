@@ -6,6 +6,7 @@ import { useQueries } from "@tanstack/react-query";
 import StaticalSection from "@/components/home/StaticalSection";
 import { Card } from "@/components/ui/card";
 import GameSection from "@/components/home/GameSection";
+import GameCard from "@/components/game/GameCard";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -52,7 +53,7 @@ const Home = () => {
   } = metadata;
 
   return (
-    <div className="p-6">
+    <div className="p-6 space-y-16">
       <HeroSection onNavigate={(pathName) => navigate(pathName)} />
       <GameSection
         gameData={gameData!}
@@ -62,20 +63,12 @@ const Home = () => {
         onNavigate={(id) => navigate(`/games/${id}`)}
         refetch={refetch}
       />
-        <Card className="w-full bg-white">
-          <div className="w-full flex items-center justify-center text-3xl gap-x-2 font-bold py-4">
-            <h1 className="">About</h1>
-            <span className="bg-linear-to-r from-blue-400 via-indigo-400 to-violet-500 bg-clip-text text-transparent">
-              Games
-            </span>
-          </div>
-          <StaticalSection
+                <StaticalSection
             isLoading={metaLoading}
             data={gameMeta}
             error={metaError!}
             refetch={metaRefetch}
           />
-        </Card>
     </div>
   );
 };

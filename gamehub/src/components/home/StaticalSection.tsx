@@ -2,6 +2,7 @@ import type { AxiosError } from "axios"
 import ErroSection from "../ErrorFallback"
 import type { MetadataType } from "@/types/gameTypes"
 import StaticalCard, { StaticalCardSkeleton } from "./StaticalCard"
+import { Gamepad2, House, Trees, Wifi } from "lucide-react"
 
 
 type Props={
@@ -21,12 +22,18 @@ const StaticalSection = ({isLoading,data,error,refetch}:Props) => {
         return <ErroSection message={error.message} onRetry={refetch}/>
     }
     return (
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 p-4">
-            <StaticalCard title={data.total_games} description="Total Games" className="bg-linear-to-r from-pink-300 via-red-300 to-rose-500"/>
-            <StaticalCard title={data.indoor_games} description="Indoor Games" className="bg-linear-to-r from-blue-400 via-purple-500 to-indigo-500"/>
-            <StaticalCard title={data.outdoor_games} description="Outdoor Games" className="bg-linear-to-r from-cyan-400 via-sky-500 to-emerald-400"/>
-            <StaticalCard title={data.online_games} description="Online Games" className="bg-linear-to-r from-yellow-400 via-amber-500 to-orange-300"/>
-        </div>
+        <section className="flex justify-center w-full flex-col gap-6">
+            <div className="w-full flex items-center text-3xl gap-2 font-bold">
+                <h1 className="">Platform Overview</h1>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-10 p-4">
+                <StaticalCard count={data?.total_games} title="Total Games" icon={<Gamepad2/>}/>
+                <StaticalCard count={data?.indoor_games} title="Indoor Games" icon={<House/>}/>
+                <StaticalCard count={data?.outdoor_games} title="Outdoor Games" icon={<Trees/>}/>
+                <StaticalCard count={data?.online_games} title="Online Games" icon={<Wifi/>}/>
+            </div>
+        </section>
+
     )
 }
 

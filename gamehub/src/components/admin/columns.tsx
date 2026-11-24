@@ -1,93 +1,116 @@
 import type { ApiKeyType, ApiKeyUsageType } from "@/types/apiKeyTypes";
-import { type ColumnDef } from "@tanstack/react-table";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "../ui/button";
-import { MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import type { BaseGameType } from "@/types/gameTypes";
 import type { UserType } from "@/types/authTypes";
 
+import { createColumnHelper } from "@tanstack/react-table";
+import { type DataTableFeatures } from "./data-table-features";
+
+const userColumnHelper = createColumnHelper<DataTableFeatures, UserType>();
+const gameColumnHelper = createColumnHelper<DataTableFeatures, BaseGameType>();
+const apiKeyColumnHelper = createColumnHelper<DataTableFeatures, ApiKeyType>();
+const apiKeyUsageColumnHelper = createColumnHelper<
+  DataTableFeatures,
+  ApiKeyUsageType
+>();
+
 interface ColumnProps {
   onSetId: (id: number) => void;
-  onSetOperation: (operation: "delete" | "update"|"upload") => void;
-  onHandleUpdate:(data:any)=>void
+  onSetOperation: (operation: "delete" | "update" | "upload") => void;
+  onHandleUpdate: (data: any) => void;
 }
 
 export const userColumns = ({
   onSetId,
   onSetOperation,
-  onHandleUpdate
-}: ColumnProps): ColumnDef<UserType>[] => {
-  const userColumns:ColumnDef<UserType>[] = [
-    {
-      accessorKey: "id",
+  onHandleUpdate,
+}: ColumnProps): any => {
+  const userColumns = userColumnHelper.columns([
+    userColumnHelper.accessor("id", {
       header: "Id",
-    },
-    {
-      accessorKey: "username",
-      header: "Name",
-    },
-    {
-      accessorKey: "email",
-      header: "Email",
-    },
-    {
-      accessorKey: "is_superuser",
+    }),
+    userColumnHelper.accessor("username", {
+      header: "Username",
+    }),
+    userColumnHelper.accessor("email", {
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Email
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      },
+    }),
+    userColumnHelper.accessor("is_superuser", {
       header: "SuperUser",
-    },
-    {
-      accessorKey: "is_active",
+    }),
+    userColumnHelper.accessor("is_active", {
       header: "Active",
-    },
-    {
-      accessorKey: "is_admin",
+    }),
+    userColumnHelper.accessor("is_admin", {
       header: "Admin",
-    },
-    {
+    }),
+    userColumnHelper.display({
       id: "actions",
-      header: "actions",
-      enableHiding: false,
+      header: "Action",
+      // enableHiding: true,
       cell({ row }) {
         const data = row.original;
+
         return (
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal />
-              </Button>
-            </DropdownMenuTrigger>
+            <DropdownMenuTrigger
+              render={
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                  <span className="sr-only">Open menu</span>
+                  <MoreHorizontal />
+                </Button>
+              }
+            />
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() => {
-                  onSetOperation("delete");
-                  onSetId(data.id);
-                }}
-              >
-                Delete
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => {
-                  onHandleUpdate(data)
-                  onSetOperation("update");
-                }}
-              >
-                Update
-              </DropdownMenuItem>
+              <DropdownMenuGroup>
+                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() => {
+                    onSetOperation("delete");
+                    onSetId(data.id);
+                  }}
+                >
+                  Delete
+                  <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    onHandleUpdate(data);
+                    onSetOperation("update");
+                  }}
+                >
+                  Update
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
         );
       },
-    },
-  ];
+    }),
+  ]);
+
   return userColumns;
 };
 
@@ -95,267 +118,243 @@ export const gameColumns = ({
   onSetId,
   onHandleUpdate,
   onSetOperation,
-}: ColumnProps): ColumnDef<BaseGameType>[] => {
-  const columns: ColumnDef<BaseGameType>[] = [
-    {
-      accessorKey: "id",
+}: ColumnProps) => {
+  const columns = gameColumnHelper.columns([
+    gameColumnHelper.accessor("id", {
       header: "Id",
-    },
-    {
-      accessorKey: "name",
+    }),
+    gameColumnHelper.accessor("name", {
       header: "Name",
-    },
-    {
-      accessorKey: "logo",
+    }),
+    gameColumnHelper.accessor("logo", {
       header: "Logo",
-    },
-    {
-      accessorKey: "description",
+    }),
+    gameColumnHelper.accessor("description", {
       header: "Description",
-    },
-    {
-      accessorKey: "details.downloads",
-      header: "Downloads",
-    },
-    {
-      accessorKey: "details.type",
-      header: "Type",
-    },
-    {
-      accessorKey: "details.category",
-      header: "Category",
-    },
-    {
-      accessorKey: "details.is_conduct_tournament",
-      header: "Tournament",
-    },
-    {
-      accessorKey: "details.available_on",
+    }),
+    gameColumnHelper.accessor("details.available_on", {
       header: "Available On",
-    },
-    {
-      accessorKey: "details.popularity",
+    }),
+    gameColumnHelper.accessor("details.category", {
+      header: "Category",
+    }),
+    gameColumnHelper.accessor("details.downloads", {
+      header: "Downloads",
+    }),
+    gameColumnHelper.accessor("details.is_conduct_tournament", {
+      header: "Is Conduct Tournament",
+    }),
+    gameColumnHelper.accessor("details.popularity", {
       header: "Popularity",
-    },
-    {
-      accessorKey: "details.ratings",
+    }),
+    gameColumnHelper.accessor("details.ratings", {
       header: "Ratings",
-    },
-    {
-      accessorKey: "development_details.founder",
-      header: "Founder",
-    },
-    {
-      accessorKey: "development_details.published_at",
-      header: "Published At",
-    },
-    {
-      accessorKey: "development_details.made_in",
-      header: "Made In",
-    },
-    {
-      accessorKey: "is_approved",
+    }),
+    gameColumnHelper.accessor("details.type", {
+      header: "Type",
+    }),
+    gameColumnHelper.accessor("is_approved", {
       header: "Is Approved",
-    },
-    {
+    }),
+    gameColumnHelper.accessor("development_details.founder", {
+      header: "Founder",
+    }),
+    gameColumnHelper.accessor("development_details.made_in", {
+      header: "MadeIn",
+    }),
+    gameColumnHelper.accessor("development_details.published_at", {
+      header: "Published At",
+    }),
+    gameColumnHelper.display({
       id: "actions",
-      header: "actions",
+      header: "Action",
       enableHiding: false,
       cell({ row }) {
         const data = row.original;
         return (
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() => {
-                  onSetId(data.id);
-                  onSetOperation("delete");
-                }}
-              >
-                Delete
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => {
-                  onHandleUpdate({
-                    id:data.id,
-                    description:data.description,
-                    logo:data.logo,
-                    name:data.name,
-                    is_approved:data.is_approved,
-                    ...data.details,
-                    ...data.development_details
-                  })
-                  onSetOperation("update");
-                }}
-              >
-                Update
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => {
-                  onSetId(data.id);
-                  onSetOperation("upload");
-                }}
-              >
-                Update Logo
-              </DropdownMenuItem>
+            <DropdownMenuTrigger
+              render={
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                  <span className="sr-only">Open menu</span>
+                  <MoreHorizontal />
+                </Button>
+              }
+            />
+            <DropdownMenuContent align="start">
+              <DropdownMenuGroup>
+                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                {/* <DropdownMenuSeparator /> */}
+                <DropdownMenuItem
+                  onClick={() => {
+                    onSetId(data.id);
+                    onSetOperation("delete");
+                  }}
+                >
+                  Delete
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    onHandleUpdate({
+                      id: data.id,
+                      description: data.description,
+                      logo: data.logo,
+                      name: data.name,
+                      is_approved: data.is_approved,
+                      ...data.details,
+                      ...data.development_details,
+                    });
+                    onSetOperation("update");
+                  }}
+                >
+                  Update
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    onSetId(data.id);
+                    onSetOperation("upload");
+                  }}
+                >
+                  Update Logo
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
         );
       },
-    },
-  ];
+    }),
+  ]);
   return columns;
 };
 
 export const apiKeyColumns = ({
   onSetId,
   onSetOperation,
-  onHandleUpdate
-}: ColumnProps): ColumnDef<ApiKeyType>[] => {
-  const columns: ColumnDef<ApiKeyType>[] = [
-    {
-      accessorKey: "id",
+  onHandleUpdate,
+}: ColumnProps) => {
+  const columns = apiKeyColumnHelper.columns([
+    apiKeyColumnHelper.accessor("id", {
       header: "Id",
-    },
-    {
-      accessorKey: "name",
+    }),
+    apiKeyColumnHelper.accessor("name", {
       header: "Name",
-    },
-    {
-      accessorKey: "api_key",
-      header: "Api Key",
-    },
-    {
-      accessorKey: "user_id",
-      header: "User",
-    },
-    {
-      accessorKey: "role",
+    }),
+    apiKeyColumnHelper.accessor("api_key", {
+      header: "API Key",
+    }),
+    apiKeyColumnHelper.accessor("role", {
       header: "Role",
-    },
-    {
+    }),
+    apiKeyColumnHelper.accessor("created_at", {
+      header: "Created At",
+    }),
+    apiKeyColumnHelper.group({
       id: "actions",
-      header: "actions",
-      enableHiding: false,
+      header: "Actions",
       cell({ row }) {
         const data = row.original;
         return (
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal />
-              </Button>
-            </DropdownMenuTrigger>
+            <DropdownMenuTrigger
+              render={
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                  <span className="sr-only">Open menu</span>
+                  <MoreHorizontal />
+                </Button>
+              }
+            />
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() => {
-                  onSetOperation("delete");
-                  onSetId(data.id);
-                }}
-              >
-                Delete
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => {
-                  onHandleUpdate(data)
-                  onSetOperation("update");
-                }}
-              >
-                Update
-              </DropdownMenuItem>
+              <DropdownMenuGroup>
+                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                <DropdownMenuItem
+                  onClick={() => {
+                    onSetOperation("delete");
+                    onSetId(data.id);
+                  }}
+                >
+                  Delete
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    onHandleUpdate(data);
+                    onSetOperation("update");
+                  }}
+                >
+                  Update
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
         );
       },
-    },
-  ];
+    }),
+  ]);
   return columns;
 };
+
 export const apiKeyUsageColumns = ({
   onSetId,
   onSetOperation,
-  onHandleUpdate
-}: ColumnProps): ColumnDef<ApiKeyUsageType>[] => {
-  const columns: ColumnDef<ApiKeyUsageType>[] = [
-    {
-      accessorKey: "id",
+  onHandleUpdate,
+}: ColumnProps) => {
+  const columns = apiKeyUsageColumnHelper.columns([
+    apiKeyUsageColumnHelper.accessor("id", {
       header: "Id",
-    },
-    {
-      accessorKey: "api_key_id",
-      header: "Api Key",
-    },
-    {
-      accessorKey: "user_id",
-      header: "User",
-    },
-    {
-      accessorKey: "count",
+    }),
+    apiKeyUsageColumnHelper.accessor("api_key", {
+      header: "API Key",
+    }),
+    apiKeyUsageColumnHelper.accessor("count", {
       header: "Count",
-    },
-    {
-      accessorKey: "endpoint",
-      header: "Endpoint",
-    },
-    {
-      accessorKey: "date",
+    }),
+    apiKeyUsageColumnHelper.accessor("date", {
       header: "Date",
-      cell({row}) {
-        const data=row.original
-        return(
-            <p>{new Date(data.date).toDateString()}</p>
-        )
-      },
-    },
-    {
-      id: "actions",
-      header: "actions",
-      enableHiding: false,
+    }),
+    apiKeyUsageColumnHelper.group({
+      header: "Actions",
+      id: "action",
       cell({ row }) {
         const data = row.original;
         return (
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal />
-              </Button>
-            </DropdownMenuTrigger>
+            <DropdownMenuTrigger
+              render={
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                  <span className="sr-only">Open menu</span>
+                  <MoreHorizontal />
+                </Button>
+              }
+            />
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() => {
-                  onSetOperation("delete");
-                  onSetId(data.id);
-                }}
-              >
-                Delete
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => {
-                  onHandleUpdate(data)
-                  onSetOperation("update");
-                }}
-              >
-                Update
-              </DropdownMenuItem>
+              <DropdownMenuGroup>
+                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() => {
+                    onSetOperation("delete");
+                    onSetId(data.id);
+                  }}
+                >
+                  Delete
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    onHandleUpdate(data);
+                    onSetOperation("update");
+                  }}
+                >
+                  Update
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
         );
       },
-    },
-  ];
+    }),
+  ]);
+
   return columns;
 };
+
+
+

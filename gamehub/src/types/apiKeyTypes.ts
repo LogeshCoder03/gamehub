@@ -11,3 +11,18 @@ export type ApiKeyUsageType={
     api_key:string
     date:Date
 }
+
+export interface UsageType{
+    date:Date
+    total:number
+}
+export interface ApiKeyUsage{
+    api_key_name:string
+    total:number
+    today:number
+}
+export interface EndpointUsage{
+    endpoint:string
+    total:number
+    today:number
+}

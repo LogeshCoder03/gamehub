@@ -1,18 +1,11 @@
 import { API_BASE_KEY } from "@/lib/constants"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
 
 export const useAuth=()=>{
-    const queryClient=useQueryClient()
     const fetchData=async()=>{
         const response=await axios.get(`${API_BASE_KEY}/auth/is_authenticated`,{withCredentials:true})
         return response.data
-    }
-    const refreshToken=async()=>{
-        await axios.get(`${API_BASE_KEY}/auth/refresh-token`,{withCredentials:true})
-            queryClient.invalidateQueries({
-                queryKey:["is_auth_user"]
-            })
     }
     const {data,isLoading,isError,error,isSuccess}=useQuery({
         queryFn:fetchData,
@@ -21,11 +14,6 @@ export const useAuth=()=>{
         refetchOnWindowFocus:false,
     })
     if (isSuccess) {
-        if (!data.success) {
-            if (data.is_refresh_token) {
-                refreshToken()
-            }   
-        }
         return {
             isLoading,
             isError,

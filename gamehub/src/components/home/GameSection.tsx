@@ -2,7 +2,9 @@ import React from "react";
 import ErroSection from "@/components/ErrorFallback";
 import type { AxiosError } from "axios";
 import type { GameDataType } from "@/types/gameTypes";
-import GameCard, { GameSkeleton } from "./GameCard";
+import GameCard, { GameSkeleton } from "../game/GameCard";
+import { Button } from "../ui/button";
+import { ArrowRight } from "lucide-react";
 
 type Props = {
   isError: boolean;
@@ -23,14 +25,12 @@ const GameSection: React.FC<Props> = ({
 }) => {
   if (isError) return <ErroSection message={error.message} onRetry={refetch}/>;
   return (
-    <div className="flex justify-center w-full flex-col">
-      <div className="w-full flex items-center justify-center text-3xl gap-x-2 font-bold py-4">
-        <h1 className="">Trending</h1>
-        <span className="bg-linear-to-r from-blue-400 via-indigo-400 to-purple-500 bg-clip-text text-transparent">
-          Games
-        </span>
+    <section className="flex justify-center w-full flex-col gap-12">
+      <div className="w-full flex items-center  justify-between">
+        <h1 className="text-3xl gap-2 font-bold">Trending <span className="">Games</span></h1>
+        <Button variant="link">View all games <ArrowRight/></Button>
       </div>
-      <div className="px-4 py-10 grid grid-cols-1 md:grid-cols-3 gap-10">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
         {isLoading ? (
             Array.from({ length: 3 }).map((_, idx) => (
               <GameSkeleton key={idx} />
@@ -45,7 +45,7 @@ const GameSection: React.FC<Props> = ({
           ))
         )}
       </div>
-    </div>
+    </section>
   );
 };
 

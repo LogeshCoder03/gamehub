@@ -6,7 +6,7 @@ import Footer from "./components/Footer"
 const App = () => {
     const {pathname}=useLocation()
     return (
-        <div className="mx-auto">
+        <div className="mx-auto relative">
             <Navbar/>
             <main>
                 <Outlet/>

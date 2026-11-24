@@ -41,7 +41,7 @@ def create_refresh_token():
 def get_current_user(request:Request):
     if not request.user.is_authenticated:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail="token is or invalid")
-    return request.user.id
+    return request.state.user_data["id"]
 
 def only_admin_area(request:Request):
     if request.state.user_data:
@@ -49,7 +49,7 @@ def only_admin_area(request:Request):
         is_admin=request.state.user_data.get('is_admin')
         if not is_superuser and not is_admin:
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,detail="You do not have permission to access this resource")
-        return request.user.id
+        return request.state.user_data["id"]
     else:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT)
 

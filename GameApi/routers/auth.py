@@ -40,7 +40,7 @@ def register_user(data: SignUpSchema,request:Request,bg:BackgroundTasks,db:Sessi
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="An account with this email already exists.Please log in or use a different email.")
     if is_username_exists:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="This username is already taken.Choose another one")
-    hashed_password =pbkdf2_sha256.hash(data.password)
+    hashed_password=pbkdf2_sha256.hash(data.password)
     verification_token=secrets.token_urlsafe(32)
     user=User(email=data.email,
               username=data.username,

@@ -1,6 +1,7 @@
 from fastapi import APIRouter,Depends,HTTPException,status,Query,File,UploadFile,Form,Request
 from datetime import  datetime
 from models.game import Game,GameDetails,GameDeveloper
+from models.auth import User
 from sqlalchemy.orm import Session
 from db.database import get_db
 from typing import Any
@@ -14,6 +15,7 @@ import shutil
 from models.auth import ApiKey,ApiKeyUsage
 from core.rate_limit import limiter,set_limit
 from pathlib import Path
+
 
 router=APIRouter(
     prefix="/games",

@@ -1,42 +1,43 @@
 import type React from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { IndianRupee } from "lucide-react"
-import { cn } from "@/lib/utils"
 import { Skeleton } from "../ui/skeleton"
+import CountUp from "./CountUp"
 
 interface Props{
     title:string|number
-    description:string
+    description?:string
     icon?:React.ReactNode
-    className:string
+    count:number
 }
 
-const StaticalCard=({title,description,icon:Icon,className}:Props)=>{
+const StaticalCard=({title,count,description,icon:Icon}:Props)=>{
     return(
-        <Card className="w-full max-w-md py-9 hover:shadow-2xl hover:backdrop-blur-3xl transition-all duration-300 border-2 border-slate-50">
-            <CardHeader className="items-center justify-center gap-y-0">
-                <div className={cn("size-18 flex items-center justify-center text-white rounded-full",className)}>
-                    <IndianRupee/>
+        <div className="shadow-sm rounded-xl px-6 p-4 group border-2 border-muted/50 flex flex-col transition-all hover:scale-101 hover:shadow-md hover:duration-500">
+            <div className="inline-flex group-hover:ring-2 group-hover:ring-offset-2 group-hover:ring-accent     size-12 bg-muted rounded-lg shadow-2xs items-center justify-center mb-4 hover:outline-2 hover:outline-muted transition-all duration-300 delay-200">
+                {Icon}
+            </div>
+            <div className="mt-auto">
+                <div className="font-bold text-3xl pb-1">
+                    <CountUp target={count} className="mb-0.5 pr-0.5"/>
+                    <span>+</span>
                 </div>
-            </CardHeader>
-            <CardContent>
-                <CardTitle className="items-center text-center font-bold text-5xl flex gap-2 justify-center">{title}{Icon}</CardTitle>
-                <CardDescription className="text-center font-semibold text-xl mt-2 text-gray-600">{description}</CardDescription>
-            </CardContent>
-        </Card>
+                <h4 className="font-medium text-lg pb-2">{title}</h4>
+                <h4 className="font-medium text-sm text-muted-foreground">{description}</h4>
+            </div>
+        </div>
     )
 }
 export const StaticalCardSkeleton=()=>{
     return(
-        <Card className="w-full max-w-md py-9 hover:shadow-2xl hover:backdrop-blur-3xl transition-all duration-300 border-2 border-slate-50">
-            <CardHeader className="items-center justify-center gap-y-0">
-                <Skeleton className="size-18 flex items-center justify-center rounded-full"/>
-            </CardHeader>
-            <CardContent className="flex items-center justify-center flex-col">
-                <Skeleton className="h-6 w-40"/>
-                <Skeleton className="h-6 w-40 mt-2"/>
-            </CardContent>
-        </Card>
+        <div></div>
+        // <Card className="w-full max-w-md py-9 hover:shadow-2xl hover:backdrop-blur-3xl transition-all duration-300 border-2 border-slate-50">
+        //     <CardHeader className="items-center justify-center gap-y-0">
+        //         <Skeleton className="size-18 flex items-center justify-center rounded-full"/>
+        //     </CardHeader>
+        //     <CardContent className="flex items-center justify-center flex-col">
+        //         <Skeleton className="h-6 w-40"/>
+        //         <Skeleton className="h-6 w-40 mt-2"/>
+        //     </CardContent>
+        // </Card>
     )
 }
 
