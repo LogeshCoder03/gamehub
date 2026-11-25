@@ -29,14 +29,18 @@ const CreateGame = () => {
     const {reset,trigger,handleSubmit,formState:{errors},register,setValue}=useForm<StepFormData>({
         resolver:zodResolver(getCurrentStepSchema()),
         mode:"onChange",
-        defaultValues:formData
+        defaultValues:formData,
     })
 
     useEffect(()=>{reset(formData)},[formData,currentStep])
 
     const createGame=async(data:AllFormFields)=>{
-        data.available_on=JSON.stringify(data.available_on)
-        const response=await axios.post(`${API_BASE_KEY}/games`,data,{
+        const publishedAt=new Date(data.published_at).toISOString()
+        const response=await axios.post(`${API_BASE_KEY}/games`,{
+            ...data,
+            available_on:JSON.stringify(data.available_on),
+            published_at:publishedAt
+        },{
             withCredentials:true,
             headers:{
                 "Content-Type":"multipart/form-data"
@@ -61,13 +65,16 @@ const CreateGame = () => {
     })
 
     const onNext=async(data:StepFormData)=>{
+        
         const isValid=await trigger()
-        if(!isValid)return
+        if(!isValid){
+            toast.add({type:"error",title:"Fill the below fields"})
+            return
+        }
         const updatedData={...formData,...data}
         updateFormData(updatedData)
         if (isLastStep) {
-            updatedData.published_at=new Date(updatedData.published_at).toISOString()
-            mutate(updatedData)
+            mutate(updatedData as AllFormFields)
         }else{
             goToNextStep()
         }

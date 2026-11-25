@@ -3,8 +3,8 @@ import ErroSection from "@/components/ErrorFallback";
 import type { AxiosError } from "axios";
 import type { GameDataType } from "@/types/gameTypes";
 import GameCard, { GameSkeleton } from "../game/GameCard";
-import { Button } from "../ui/button";
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router";
 
 type Props = {
   isError: boolean;
@@ -18,17 +18,18 @@ type Props = {
 const GameSection: React.FC<Props> = ({
   isError,
   isLoading,
-  gameData,
+  gameData={data:[]},
   error,
   onNavigate,
   refetch
 }) => {
+    
   if (isError) return <ErroSection message={error.message} onRetry={refetch}/>;
   return (
-    <section className="flex justify-center w-full flex-col gap-12">
-      <div className="w-full flex items-center  justify-between">
-        <h1 className="text-3xl gap-2 font-bold">Trending <span className="">Games</span></h1>
-        <Button variant="link">View all games <ArrowRight/></Button>
+    <section className="flex flex-col gap-12">
+      <div className="w-full flex justify-between items-center">
+        <h1 className="text-3xl gap-2 font-semibold ">Trending <span className="">Games</span></h1>
+        <Link to="/games" className="flex gap-2 font-medium text-sm hover:text-muted-foreground duration-300 transition justify-center items-center">View all games <ArrowRight size={18}/></Link>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
         {isLoading ? (

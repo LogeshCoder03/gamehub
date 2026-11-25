@@ -2,7 +2,7 @@ import { Sparkles } from "lucide-react";
 import { Button } from "../ui/button";
 import { animate, motion } from "motion/react";
 import hero from "@/assests/hero.jpg";
-import { useRef } from "react";
+import React, { useRef } from "react";
 
 interface Props {
   onNavigate: (pathName: string) => void;
@@ -11,15 +11,14 @@ interface Props {
 const HeroSection: React.FC<Props> = ({ onNavigate }) => {    
     const ref=useRef<HTMLDivElement>(null)
     const heroRef=useRef<HTMLDivElement>(null)
-    const handleMouseEnter=(e:MouseEvent)=>{
+    const handleMouseEnter=(_:React.MouseEvent<HTMLElement>)=>{
         const el=ref.current
         const heroEl=heroRef.current
         if (!el||!heroEl) return;
         const rect=el.getBoundingClientRect()
-        const heroRect=heroEl.getBoundingClientRect()
-                
+        const heroRect=heroEl.getBoundingClientRect()        
         animate(ref.current,{
-            x:heroRect.width-rect.width+20,
+            x:(heroRect.width-rect.width)+20,
         },{
             duration:1
         })

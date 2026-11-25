@@ -1,4 +1,4 @@
-import type { Step } from '@/lib/types'
+import type { Step } from '@/types/stepTypes'
 import { Check } from 'lucide-react'
 
 const ProgressSteps= ({currentStep,steps}:{currentStep:number,steps:Step[]}) => {

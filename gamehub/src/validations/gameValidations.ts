@@ -1,5 +1,5 @@
 import { AvailbleOn, Gametype, Popularity } from '@/types/gameTypes'
-import {z} from 'zod'
+import z from 'zod'
 
 export const baseGameSchema=z.object({
     name:z.string().nonempty(),

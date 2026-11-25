@@ -29,7 +29,6 @@ const useAdminContext = () => {
     const context=useContext(AdminContext)
     if (!context) {
         throw new Error("Context not found");
-        
     }
     return context
 }

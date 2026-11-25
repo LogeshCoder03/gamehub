@@ -13,9 +13,9 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   if (!active || !payload?.length) return null;
 
   return (
-    <div className="rounded-lg border bg-white px-3 py-2 text-sm shadow">
+    <div className="rounded-lg border bg-background px-3 py-2 text-sm shadow">
       <p className="font-medium">{label}</p>
-      <p className="text-blue-600">
+      <p className="text-chart-1">
         {payload[0].value}
       </p>
     </div>
@@ -25,8 +25,8 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 export default function NiceLineChart({ data,title,error }: { data: any[],title:string,error:Error }) {
     if(error)return <ErrorFallback message={error.message}/>
     return (
-    <div className="rounded-2xl border bg-white p-4 shadow-sm">
-      <h3 className="mb-3 text-sm font-medium text-gray-700">
+    <div className="rounded-2xl border bg-background p-4 shadow-sm">
+      <h3 className="mb-3 text-sm font-medium text-foreground">
         {title}
       </h3>
 

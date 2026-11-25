@@ -1,60 +1,140 @@
 import {
-  Search, Download, Star, Building2,
-  CalendarDays, Shapes, RotateCcw, SlidersHorizontal,
-  LucideIceCreamBowl
+  Search,
+  Download,
+  Star,
+  Building2,
+  CalendarDays,
+  Shapes,
+  RotateCcw,
+  SlidersHorizontal,
+  LucideIceCreamBowl,
 } from "lucide-react";
 import type { FilterProps } from "@/pages/games/Games";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../ui/select";
-const downloardOptions=[
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+const downloardOptions = [
+  {
+    label: "All downloards",
+    value: "all",
+  },
+  {
+    label: "100k",
+    value: "100000",
+  },
+  {
+    label: "500k",
+    value: "50000",
+  },
+  {
+    label: "1m",
+    value: "1000000",
+  },
+  {
+    label: "10m",
+    value: "10000000",
+  },
+  {
+    label: "50m+",
+    value: "50000000",
+  },
+];
+
+const ratingsOptions = [
+  {
+    label: "Any rating",
+    value: "all",
+  },
+  {
+    label: "4.5 and above",
+    value: "4.5",
+  },
+  {
+    label: "4.0 and above",
+    value: "4",
+  },
+  {
+    label: "3.5 and above",
+    value: "3.5",
+  },
+  {
+    label: "3.0 and above",
+    value: "3",
+  },
+];
+
+const launchDateOptions = [
+  {
+    label: "Any",
+    value: "all",
+  },
+  {
+    label: "Last 30 days",
+    value: "30days",
+  },
+  {
+    label: "Last 3 months",
+    value: "90days",
+  },
+  {
+    label: "This year",
+    value: "year",
+  },
+  {
+    label: "2025",
+    value: "2025",
+  },
+  {
+    label: "2024",
+    value: "2024",
+  },
+];
+
+const popularities=[
     {
-        label:"All downloards",
-        value:'all'
+        label:"Extreme",
+        value:"extreme"
     },
     {
-        label:"100k",
-        value:'100k'
+        label:"High",
+        value:"high"
     },
     {
-        label:"500k",
-        value:'500k'
+        label:"Medium",
+        value:"medium"
     },
     {
-        label:"1m",
-        value:'1m'
-    },
-    {
-        label:"10m",
-        value:'10m'
-    },
-    {
-        label:"50m",
-        value:'50m'
+        label:"Low",
+        value:"low"
     },
 ]
 
-type Props={
-  filters:FilterProps
-    onFiltersChange:(key:keyof FilterProps,value:string)=>void
-    resetFilter:()=>void
-}
+type Props = {
+  filters: FilterProps;
+  onFiltersChange: (key: keyof FilterProps, value: string) => void;
+  resetFilter: () => void;
+};
 
- function GameFilterSection({
-  onFiltersChange,
-  resetFilter,
-  filters
-}:Props) {
+function GameFilterSection({ onFiltersChange, resetFilter, filters }: Props) {
 
-  const selectClass = `
-    w-full rounded-xl border border-border
-    bg-background px-3 py-3 text-sm
-    outline-none transition
-    focus:border-primary focus:ring-2
-    focus:ring-primary/20
-  `;
 
-  const FilterField = ({ label, icon: Icon, children }:{label:string,icon:typeof LucideIceCreamBowl,children:React.ReactNode}) => (
+  const FilterField = ({
+    label,
+    icon: Icon,
+    children,
+  }: {
+    label: string;
+    icon: typeof LucideIceCreamBowl;
+    children: React.ReactNode;
+  }) => (
     <div className="min-w-0 space-y-2">
       <label className="flex items-center gap-2 text-sm font-medium">
         <Icon size={16} className="text-muted-foreground" />
@@ -66,7 +146,6 @@ type Props={
 
   return (
     <section className="rounded-2xl border bg-card p-5 shadow-sm">
-
       {/* Header */}
       <div className="mb-5 flex items-center justify-between gap-3">
         <div>
@@ -79,10 +158,7 @@ type Props={
           </p>
         </div>
 
-        <Button
-        variant="link"
-          onClick={resetFilter}
-        >
+        <Button variant="link" onClick={resetFilter}>
           <RotateCcw size={15} />
           Reset
         </Button>
@@ -90,104 +166,125 @@ type Props={
 
       {/* Search */}
       <div className="relative mb-6">
-        <Search size={18}
+        <Search
+          size={18}
           className="absolute left-3 top-1/2
-            -translate-y-1/2 text-muted-foreground" />
+            -translate-y-1/2 text-muted-foreground"
+        />
 
         <Input
           value={filters.search}
-          onChange={e => onFiltersChange("search", e.target.value)}
+          onChange={(e) => onFiltersChange("search", e.target.value)}
           placeholder="Search games by title..."
-        className="pl-10 h-11"
+          className="pl-10 h-11"
         />
       </div>
 
       {/* Filters */}
-      <div className="grid grid-cols-1 gap-4
-        sm:grid-cols-2 lg:grid-cols-3">
-
+      <div
+        className="grid grid-cols-1 gap-4
+        sm:grid-cols-2 lg:grid-cols-3"
+      >
         <FilterField label="Downloads" icon={Download}>
           <Select
-          items={downloardOptions}
+            items={downloardOptions}
             value={filters.downloads}
-            onValueChange={value=>onFiltersChange("downloads", value!)}
-            // onChange={}
+            onValueChange={(value) => onFiltersChange("downloads", value!)}
           >
             <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select a downloards"/>
+              <SelectValue placeholder="Select a downloards" />
             </SelectTrigger>
             <SelectContent>
-                <SelectGroup >
-                    <SelectLabel>Downloards</SelectLabel>
-                    {downloardOptions.map(
-                        (option)=><SelectItem value={option.value}>
-                            {option.label}
-                        </SelectItem>
-                    )}
-                </SelectGroup>
+              <SelectGroup>
+                <SelectLabel>Downloards</SelectLabel>
+                {downloardOptions.map((option) => (
+                  <SelectItem value={option.value}>{option.label}</SelectItem>
+                ))}
+              </SelectGroup>
             </SelectContent>
           </Select>
         </FilterField>
 
         <FilterField label="Rating" icon={Star}>
-          <select
-            className={selectClass}
-            value={filters.rating}
-            onChange={e => onFiltersChange("rating", e.target.value)}
+          <Select
+            value={filters.ratings}
+            onValueChange={(value) => onFiltersChange("ratings", value!)}
           >
-            <option value="all">Any rating</option>
-            <option value="4.5">4.5 and above</option>
-            <option value="4">4.0 and above</option>
-            <option value="3.5">3.5 and above</option>
-            <option value="3">3.0 and above</option>
-          </select>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select a Ratings" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Ratings</SelectLabel>
+                {ratingsOptions.map((option) => (
+                  <SelectItem value={option.value}>{option.label}</SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </FilterField>
 
-        <FilterField label="Company" icon={Building2}>
-          <select
-            className={selectClass}
-            value={filters.company}
-            onChange={e => onFiltersChange("company", e.target.value)}
+        <FilterField label="Popularity" icon={Building2}>
+          <Select
+            value={filters.popularity}
+            onValueChange={(value) => onFiltersChange("popularity", value!)}
           >
-            <option value="all">All companies</option>
-            {[{id:1,name:"A"}].map(company => (
-              <option key={company.id} value={company.id}>
-                {company.name}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select a Popularity" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Companies</SelectLabel>
+                {popularities.map((popularity,idx) => (
+                  <SelectItem key={idx} value={popularity.value}>
+                    {popularity.label}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </FilterField>
 
         <FilterField label="Launch Date" icon={CalendarDays}>
-          <select
-            className={selectClass}
+          <Select
             value={filters.launchDate}
-            onChange={e => onFiltersChange("launchDate", e.target.value)}
+            onValueChange={(value) => onFiltersChange("launchDate", value!)}
           >
-            <option value="all">Any time</option>
-            <option value="30days">Last 30 days</option>
-            <option value="90days">Last 3 months</option>
-            <option value="year">This year</option>
-            <option value="2025">2025</option>
-            <option value="2024">2024</option>
-          </select>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select a Launch Date" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Launched At</SelectLabel>
+
+                {launchDateOptions.map((date, idx) => (
+                  <SelectItem key={idx} value={date.value}>
+                    {date.label}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </FilterField>
 
         <FilterField label="Category" icon={Shapes}>
-          <select
-            className={selectClass}
-            value={filters.category}
-            onChange={e => onFiltersChange("category", e.target.value)}
+          <Select
+            value={filters.type}
+            onValueChange={(value) => onFiltersChange("type", value!)}
           >
-            <option value="all">All categories</option>
-            {[{id:1,name:"A"}].map(category => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select a category" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Categories</SelectLabel>
+                  <SelectItem value="indoor">Indoor</SelectItem>
+                  <SelectItem value="outdoor">Outdoor</SelectItem>
+                  <SelectItem value="online">Online</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </FilterField>
-
       </div>
 
       <div className="mt-5 flex justify-end border-t pt-4">
@@ -200,9 +297,8 @@ type Props={
           Clear Filters
         </button>
       </div>
-
     </section>
   );
 }
 
-export default GameFilterSection
+export default GameFilterSection;

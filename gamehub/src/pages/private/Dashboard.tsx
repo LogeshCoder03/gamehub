@@ -99,8 +99,10 @@ const Dashboard = () => {
                             View your API key usage statistics,including total requests and today's activity
                         </p>
                     </div>
-                    <Card className="w-full p-2">
-                        {usageError?<ErrorFallback message={usageError.message}/>:(
+                    <div className="w-full p-2">
+                        {usageError?<ErrorFallback message={usageError.message}/>:keyUsages.length===0?(
+                    <div className="">None</div>    
+                    ):(
                             <Table>
                                 <TableHeader>
                                     <TableRow>
@@ -120,7 +122,7 @@ const Dashboard = () => {
                                 </TableBody>
                             </Table>
                         )}
-                    </Card>
+                    </div>
                 </div>
             </div>
         </div>

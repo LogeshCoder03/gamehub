@@ -67,7 +67,7 @@ export const gameFields:FieldProps[]=[
     {
         label:"Description",
         name:"description",
-        type:"text",
+        type:"textarea",
     },
     {
         label:"Founder",

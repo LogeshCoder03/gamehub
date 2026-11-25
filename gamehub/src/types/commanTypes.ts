@@ -3,9 +3,10 @@ import {type ColumnDef} from '@tanstack/react-table'
 export type FieldProps={
     label:string
     name:string
-    type:string
-    value?:string
-    onEdit?:(data:any)=>void,
+    type:"number"|"text"|"select"|"checkbox"|"email"|"password"|"datetime-local"|"other"|"textarea"
+    value?:any
+    // onEdit?:(data:any)=>void,
+    onEdit?:(key:string,value:any)=>void,
     options?:any[]
 }
 

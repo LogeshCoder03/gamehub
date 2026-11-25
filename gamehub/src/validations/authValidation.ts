@@ -27,6 +27,7 @@ export interface AuthFormFieldProps{
     errors:Record<string,{message?:string}>;
     type?:string;
     maxLength?:number;
+    placeholder:string
 }
 
 export const passwordSchema=z.object({

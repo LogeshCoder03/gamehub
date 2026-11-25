@@ -101,8 +101,10 @@ def create_game(name:str=Form(...),
 def get_all_games(request:Request,
                   page:int=Query(1),
               search:str|None=Query(None),
+              downloards:str|None=Query(None),
               popularity:str|None=Query(None),
               game_type:str|None=Query(None),
+              ratings:str|None=Query(None),
               api_key=Depends(api_key_header),
               db:Session=Depends(get_db)):
     is_valid_api_key=check_api_key_header(db, api_key,"/games")
@@ -118,8 +120,12 @@ def get_all_games(request:Request,
             query=query.filter(Game.name.ilike(f"%{search}%"))
         if game_type:
             query=query.filter(GameDetails.type==game_type)
+        if downloards:
+            query=query.filter(GameDetails.downloads>=downloards)
         if popularity:
             query=query.filter(GameDetails.popularity==popularity)
+        if ratings:
+            query=query.filter(GameDetails.ratings>=ratings)
         data=query.limit(page_size).offset(offset).all()
         return {
             "data": data,

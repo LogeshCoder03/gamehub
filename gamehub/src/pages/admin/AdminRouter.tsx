@@ -41,7 +41,7 @@ const AdminRouter = () => {
     return(
         <SidebarProvider>
             <AppSidebar items={items}/>
-            <main className="w-full">
+            <main className="w-full bg-background overflow-x-hidden scrollbar-thumb-accent">
                 <SidebarTrigger/>
                 <Outlet />
                 <Toaster/>

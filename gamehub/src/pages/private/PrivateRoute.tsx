@@ -26,7 +26,7 @@ const PrivateRoute = () => {
     return(
         <SidebarProvider>
             <AppSidebar items={items}/>
-            <main className='w-full'>
+            <main className='w-full overflow-x-hidden scrollbar-thumb-accent'>
                 <SidebarTrigger/>
                 <Outlet />
             </main>

@@ -10,24 +10,21 @@ import axios from "axios"
 import { useState } from "react"
 import { useNavigate } from "react-router"
 
+
 const initialFilters = {
   search: "",
-  downloads: "all",
-  rating: "all",
-  company: "all",
-  launchDate: "all",
-  category: "all",
-  type: "all",
-  popularity: "all",
+  downloads: "",
+  ratings: "",
+  launchDate: "",
+  type: "",
+  popularity: "",
 };
 
 export interface FilterProps{
   search: string,
   downloads: string,
-  rating: string,
-  company: string,
+  ratings: string,
   launchDate: string,
-  category: string,
   type:string
   popularity:string
 }
@@ -54,12 +51,11 @@ const Games = () => {
         debouncedValue&&url.searchParams.set('search',debouncedValue)
         Object.entries(filter).forEach(
             ([k,v])=>{
-                if (k!=="search" && v.trim()!=="all"){
+                if (k!=="search" && v.trim()!=="all"&&v!=""){
                     url.searchParams.set(k,v)
                 }
             }
         )
-        console.log(url);
     
         const response=await axios.get(url.toString(),{headers:{
             "X-API-KEY":API_HEADER
@@ -79,7 +75,7 @@ const Games = () => {
         ))
     }
     
-    // if (isError) return <ErrorFallback message={error.message} onRetry={refetch}/>
+    if (isError) return <ErrorFallback message={error.message} onRetry={refetch}/>
     return (
         <div className="min-h-screen w-full p-2">
             <div className="m-4 text-center">
@@ -89,7 +85,6 @@ const Games = () => {
             onFiltersChange={handleFilter}
             filters={filter}
             resetFilter={()=>setFilter(initialFilters)}
-            // onSearch={handleSearch}
             />
             <div className="grid grid-cols-1 md:grid-cols-3 gap-10 pt-8 px-2">
                 {isLoading?Array.from({length:3}).map((_,idx)=><GameSkeleton key={idx}/>):
@@ -101,7 +96,7 @@ const Games = () => {
             </div>
             <div className="mt-10 mb-5">
                 <Pagination>
-                    {data?.total_pages!=0&&
+                    {(!isLoading&&data?.total_pages!=0)&&
                     <PaginationContent>
                         {page!=1&&<PaginationItem><PaginationPrevious onClick={()=>setPage(prev=>prev-1)} /></PaginationItem>}
                         {page!==data?.total_pages&&<PaginationItem><PaginationNext onClick={()=>setPage(prev=>prev+1)} /></PaginationItem>}
